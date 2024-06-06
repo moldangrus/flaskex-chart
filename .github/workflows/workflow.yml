@@ -13,5 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check Helm Version
-        run: helm version
+      - name: Setup KUBECONFIG
+        uses: vbem/kubeconfig4sa@v1
+        with:
+          server:     ${{ secrets.DEV_K8S_ADDRESS }}
+          ca-base64:  ${{ secrets.DEV_K8S_CA_BASE64 }}
+          token:      ${{ secrets.DEV_K8S_SA_TOKEN }}
+          namespace:  default
+
+      - name: Check Helm
+        run: helm list
